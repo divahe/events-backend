@@ -14,6 +14,7 @@ import java.time.*;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +27,8 @@ public class EventService {
         Optional<Event> optionalEvent = eventRepository.findById(registrationDto.getEventId());
         if (optionalEvent.isPresent()) {
             Event event = optionalEvent.get();
-            event.getAppUsers().add(user);
+            Set<AppUser> users = event.getAppUsers();
+            users.add(user);
             return new ResponseEntity<>(eventRepository.save(event), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);

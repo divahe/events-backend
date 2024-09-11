@@ -9,7 +9,8 @@ import java.util.List;
 @Getter
 @RequiredArgsConstructor
 public enum Role {
-    ADMIN;
+    ADMIN,
+    USER;
     public List<SimpleGrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + this.name()));
     }

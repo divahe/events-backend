@@ -9,6 +9,6 @@ import java.time.Instant;
 import java.util.List;
 
 public interface EventRepository extends JpaRepository<Event, Integer> {
-    @Query("SELECT e FROM Event e WHERE e.time >= :start")
+    @Query("SELECT e FROM Event e LEFT JOIN FETCH e.appUsers WHERE e.time >= :start")
     List<Event> findFromDate(@Param("start") Instant yesterday);
 }

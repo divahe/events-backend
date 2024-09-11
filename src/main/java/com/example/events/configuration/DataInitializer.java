@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 public class DataInitializer implements CommandLineRunner {
     private final AdminService adminService;
 
-    // Fetch admin credentials from application.properties
     @Value("${administration.username}")
     private String adminUsername;
 

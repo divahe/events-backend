@@ -1,10 +1,9 @@
 package com.example.events.models;
 
 import com.example.events.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,21 +12,22 @@ import java.util.Set;
 
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class AppUser implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
+    private Integer id;
     private String username;
     private String password;
     private String firstName;
     private String lastName;
     private String idCode;
     private Role role;
+    @JsonIgnore
     @ManyToMany(mappedBy = "appUsers")
     private Set<Event> events;
 
