@@ -1,15 +1,13 @@
 package com.example.events.service;
 
 import com.example.events.dto.RegistrationDto;
+import com.example.events.exceptions.EventNotFoundException;
 import com.example.events.models.AppUser;
 import com.example.events.models.Event;
 import com.example.events.repository.AppUserRepository;
 import com.example.events.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.time.*;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -22,17 +20,14 @@ public class EventService {
     private final AppUserRepository appUserRepository;
     private final EventRepository eventRepository;
 
-    public ResponseEntity<Event> registerToEvent(RegistrationDto registrationDto) {
+    public Event registerToEvent(RegistrationDto registrationDto) {
         AppUser user = saveOrUpdateUser(registrationDto.getAppUser());
-        Optional<Event> optionalEvent = eventRepository.findById(registrationDto.getEventId());
-        if (optionalEvent.isPresent()) {
-            Event event = optionalEvent.get();
-            Set<AppUser> users = event.getAppUsers();
-            users.add(user);
-            return new ResponseEntity<>(eventRepository.save(event), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
-        }
+        Event event = eventRepository.findById(registrationDto
+                .getEventId())
+                .orElseThrow(() -> new EventNotFoundException("Event not found"));
+        Set<AppUser> users = event.getAppUsers();
+        users.add(user);
+        return eventRepository.save(event);
     }
 
     private AppUser saveOrUpdateUser(AppUser newUser) {
@@ -46,14 +41,13 @@ public class EventService {
             return appUserRepository.save(newUser);
         }
     }
-    public ResponseEntity<List<Event>> getEventsFromToday() {
+
+    public List<Event> getEventsFromYesterday() {
         Instant yesterday = Instant.now().minus(1, ChronoUnit.DAYS);
-        List<Event> fromDate = eventRepository.findFromDate(yesterday);
-        return new ResponseEntity<>(fromDate, HttpStatus.OK);
+        return eventRepository.findFromDate(yesterday);
     }
 
-    public ResponseEntity<Event> saveEvent(Event event) {
-        Event savedEvent = eventRepository.save(event);
-        return new ResponseEntity<>(savedEvent, HttpStatus.OK);
+    public Event saveEvent(Event event) {
+        return eventRepository.save(event);
     }
 }

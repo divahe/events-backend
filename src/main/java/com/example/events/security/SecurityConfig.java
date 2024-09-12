@@ -13,7 +13,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import static com.example.events.enums.Role.ADMIN;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
@@ -46,14 +45,14 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("api/v1/auth/**").permitAll()
-                        .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("api/v1/events/**").permitAll()
                         .requestMatchers("api/v1/admin/**").hasAnyRole(ADMIN.name())
                         .anyRequest()
                         .authenticated()
 
                 )
-                //.headers(AbstractHttpConfigurer::disable) // for exposing  H2 console data
+                .headers(AbstractHttpConfigurer::disable) // for exposing  H2 console data
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
