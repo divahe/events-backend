@@ -1,5 +1,5 @@
 package com.example.events.controllers;
-import com.example.events.dto.AuthResponseDTO;
+import com.example.events.dto.AuthResponseDto;
 import com.example.events.dto.LoginDto;
 import com.example.events.service.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,12 +17,12 @@ public class AuthController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("login")
-    public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<AuthResponseDto> login(@RequestBody LoginDto loginDto) {
         return new ResponseEntity<>(authenticationService.authenticate(loginDto), HttpStatus.OK);
     }
 
     @PostMapping("refresh-token")
-    public ResponseEntity<AuthResponseDTO> refreshToken(HttpServletRequest request) {
+    public ResponseEntity<AuthResponseDto> refreshToken(HttpServletRequest request) {
         return new ResponseEntity<>(authenticationService.refreshToken(request), HttpStatus.OK);
     }
 }

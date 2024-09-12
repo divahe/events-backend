@@ -1,6 +1,6 @@
 package com.example.events.service;
 
-import com.example.events.dto.AuthResponseDTO;
+import com.example.events.dto.AuthResponseDto;
 import com.example.events.dto.LoginDto;
 import com.example.events.enums.TokenType;
 import com.example.events.exceptions.FailedAuthenticationException;
@@ -29,7 +29,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
 
-    public AuthResponseDTO authenticate(LoginDto request) {
+    public AuthResponseDto authenticate(LoginDto request) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
@@ -45,7 +45,7 @@ public class AuthenticationService {
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
         saveUserToken(user, refreshToken);
-        return AuthResponseDTO
+        return AuthResponseDto
                 .builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
@@ -75,7 +75,7 @@ public class AuthenticationService {
         tokenRepository.saveAll(validUserTokens);
     }
 
-    public AuthResponseDTO refreshToken(HttpServletRequest request) {
+    public AuthResponseDto refreshToken(HttpServletRequest request) {
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String refreshToken;
         final String userName;
@@ -90,7 +90,7 @@ public class AuthenticationService {
             if (jwtService.isTokenValid(refreshToken, user)) {
                 var accessToken = jwtService.generateToken(user);
                 saveUserToken(user, accessToken);
-                return AuthResponseDTO.builder().accessToken(accessToken).refreshToken(refreshToken).build();
+                return AuthResponseDto.builder().accessToken(accessToken).refreshToken(refreshToken).build();
             }
         }
         throw new InvalidTokenException("Invalid refresh token");
