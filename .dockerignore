@@ -1,0 +1,38 @@
+# Ignore Maven and Gradle build directories
+target/
+build/
+
+# Ignore temporary files and directories
+*.log
+*.tmp
+*.swp
+*.DS_Store
+*.idea
+*.vscode
+*.iml
+
+# Ignore local environment files
+.env
+.env.local
+
+# Ignore IDE project files
+/.project
+/.classpath
+/.settings
+/.idea/
+/*.iml
+
+# Ignore OS generated files
+Thumbs.db
+.DS_Store
+
+# Ignore node_modules (if using frontend within the project structure)
+node_modules/
+
+# Ignore test directories
+**/test
+**/tests
+
+# Ignore any other local files or directories you don't want in the image
+**/*.bak
+**/*.orig
