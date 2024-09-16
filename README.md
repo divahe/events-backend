@@ -38,7 +38,7 @@ The frontend project is written in TypeScript using the Vue 3 framework and util
 ### Setup for deployment
 
 - Backend: Tomcat on port 8080
-- Frontend: Nginx on port 80, should be mapped to host port 5173 to avoid CORS issues. Anther option is to reconfigure Spring Security settings.
+- Frontend: Nginx on port 80, should be mapped to host port 5173 to avoid CORS issues. Another option is to reconfigure Spring Security settings.
 - Ensure Docker Desktop is running to build images.
 
 To build an image for either the frontend or backend, use the following command in the folder where Dockerfile is located:
